@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Proyecto Funcional: Ejercicio 1</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+	<meta name="keywords" content="free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FreeHTML5.co" />
+		<script src="https://cdn.jsdelivr.net/npm/vega@5.9.0"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vega-lite@4.0.2"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vega-embed@6.2.1"></script>
+
+
+
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="favicon.ico">
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="css/flexslider.css">
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+	<div id="fh5co-page">
+		<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+		<aside id="fh5co-aside" role="complementary" class="border js-fullheight">
+
+			<h1 id="fh5co-logo"><a href="index.html">Indice</a></h1>
+			<nav id="fh5co-main-menu" role="navigation">
+				<ul>
+					<li class="fh5co-active"><a href="index.html">Página Principal</a></li>
+					<li><a href="firstSentence.html">Ejercicio 1: Tweets y Retweets por día</a></li>
+					<li><a href="secondSentence.html">Ejercicio 2: Tweets y Retweets por hora</a></li>
+					<li><a href="thirdSentence.html">Ejercicio 3: Aplicaciones usadas</a></li>
+					<li><a href="fourthSentence.html">Ejercicio 4: Distribución de Hashtags</a></li>
+					<li><a href="fifthSentence.html">Ejercicio 5: Distribución de Menciones</a></li>
+					<li><a href="sixthSentence.html">Ejercicio 6: Distribución de URLS</a></li>
+					<li><a href="seventhSentence.html">Ejercicio 7: Distribución de Media</a></li>
+					<li><a href="eighthSentence.html">Ejercicio 8: Correlación de Pearson</a></li>
+					<li><a href="ninethSentence.html">Ejercicio 9: Lista de usuarios</a></li>
+					<li><a href="tenthSentence.html">Ejercicio 10: Menciones por Usuario</a></li>
+				</ul>
+			</nav>
+
+		</aside>
+
+		<div id="fh5co-main">
+			<div class="fh5co-narrow-content">
+				<div class="row row-bottom-padded-md">
+					<div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
+						<div id="vis1"></div>
+						<div id="vis2"></div>
+					</div>
+					<div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
+						<h1 class="fh5co-heading">N&uacute;mero de publicaciones por d&iacute;a</h1>
+						<p>El siguiente mapeo exploratorio tiene como proposito conocer la frecuencia con la que un
+							usuario publica en la red social twitter. Las visualizaciones mostraran el número de tweets
+							publicados en función del día del mes, además de ser dividos por publicaciones propias
+							(tweets) y publicaciones compartidas (retweets)</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		const vlSpec1 = {
+			$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+			data: {
+				"url": "data/firstSentence/tweetperDay.csv"
+			},
+			"width": 320,
+			"height": 200,
+			mark: 'bar',
+			encoding: {
+				x: {
+					field: 'Day',
+					type: 'quantitative',
+					title: 'Día del mes',
+					"scale": {"domain": [1, 32]}
+				},
+				y: {
+					field: 'Tweet N',
+					type: 'quantitative',
+					title: 'Número de Tweets'
+				}
+			}
+		};
+		// Embed the visualization in the container with id `vis`
+		vegaEmbed('#vis1', vlSpec1);
+
+		const vlSpec2 = {
+			$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+			data: {
+				"url": "data/firstSentence/retweetperDay.csv"
+			},
+			"width": 320,
+			"height": 200,
+			mark: 'bar',
+			encoding: {
+				x: {
+					field: 'Day',
+					type: 'quantitative',
+					title: 'Día del mes',
+					scale: {"domain": [1, 32]}
+				},
+				y: {
+					field: 'Retweet N',
+					aggregate: 'sum',
+					type: 'quantitative',
+					title: 'Número de Retweets'
+				}
+			}
+		};
+		vegaEmbed('#vis2', vlSpec2);
+	</script>
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Flexslider -->
+	<script src="js/jquery.flexslider-min.js"></script>
+	
+	
+	<!-- MAIN JS -->
+	<script src="js/main.js"></script>
+
+	</body>
+</html>
+

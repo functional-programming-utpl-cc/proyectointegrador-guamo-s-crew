@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        Programación Funcional
+    </title>
+    
+    <script type="text/javascript">
+        function factorial(N) {
+            if (N == 0) {
+                return 1;
+            } else {
+                return N * factorial(N - 1)
+            }
+        }
+        function boton_click() {
+            //body
+            let Num = parseInt(document.getElementById('ingNum').value);
+            let fac = factorial(Num);
+            alert(fac);
+            }
+
+    </script>
+
+</head>
+<body>
+<div>
+
+    <h2>Programa recursivo</h2>
+    <p>Elavorado por <strong>Edgar Guamo M</strong></p>
+</div>
+<div>
+    <table>
+        <tr><td> Ingrese Numero</td> <td> <input type="text" name="" id="ingNum"
+                                                 placeholder="Ingrese numero"></td></tr>
+        <tr><td><button onclick="boton_click()">Calcular Factorial</button></td></tr>
+        <tr><td>Resultado</td><td><input type="text" name="" id="inResult"></td></tr>
+    </table>
+</div>
+</body>
+</html>
