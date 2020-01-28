@@ -113,3 +113,19 @@ val tweetHourcsv = out5.asCsvWriter[(Int, Int)](rfc.withHeader("Hour", "Tweet N"
 tweetperHour.foreach(tweetHourcsv.write(_) )
 tweetHourcsv.close()
 */
+// Third Sentence: Aplicaciones más usadas para publicar
+
+/*
+
+Filtrado de la columna source y agrupación por caracteres semejantes
+val apps = ListMap(values.filterNot(tweet => tweet.text.startsWith("RT"))
+  .map(tweet => tweet.source.split (">")(1).replace("</a", "")).groupBy(identity)
+  .map({case(k, v) => (k, v.length)})
+  .toSeq.sortWith(_._2 > _._2): _*)
+
+//Creación de un archivo temporal
+val outApps = java.io.File.createTempFile("apps.csv", "csv")
+val appsCsv = outApps.asCsvWriter[(String, Int)](rfc.withHeader("Aplicacion", "Cantidad de Usuarios") )
+apps.foreach(appsCsv.write(_))
+appsCsv.close()
+*/
