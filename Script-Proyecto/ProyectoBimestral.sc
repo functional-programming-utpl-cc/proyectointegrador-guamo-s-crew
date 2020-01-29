@@ -230,3 +230,54 @@ user_mentioned.foreach(writerUMentions.write(_))
 
 writerUMentions.close()
 */
+
+// Seven Sentence:
+
+/*
+
+// Manejo de json y uso del objeto media usando Try
+val mediaN = values.map(tweet => Try{ujson.read(tweet.entitiesStr).obj("media").arr.length}).map(result => result match{
+  case Success(s) => s
+  case Failure(e) => 0
+}).groupBy(identity).map({case (k, v) => (k, v.length)})
+
+//Creación de un archivo temporal
+val outMedia = java.io.File.createTempFile("media.csv", "csv")
+val writerMedia = outMedia.asCsvWriter[(Int, Int)](rfc.withHeader("mediaN", "count"))
+mediaN.foreach(writerMedia.write(_))
+writerMedia.close()
+*/
+
+//Eighth Sentence: Cálculo Covarianza de correlación de Pearson
+
+/*
+//Cálculo de la media marginal
+val friendsMarginal = values.map(tweet => tweet.userFriendsCount).sum /
+  values.length.toDouble
+val followersMarginal = values.map(tweet => tweet.userFollowersCount).sum /
+  values.length.toDouble
+
+//Cálculo de la desviación
+val friendsDesv =math.sqrt((values.map(tweet => math.pow(tweet.userFriendsCount,2)).sum) /
+  values.length.toDouble -
+  math.pow(friendsMarginal,2))
+val followersDesv =math.sqrt((values.map(tweet => math.pow(tweet.userFollowersCount,2)).sum) /
+  values.length.toDouble -
+  math.pow(followersMarginal,2))
+
+//Cálculo de la covarianza
+val covarianza = values.map(tweet => tweet.userFriendsCount * tweet.userFollowersCount).sum /
+values.length - friendsMarginal * followersMarginal
+
+//Cálculo Covarianza de correlación de Pearson
+val pearson = covarianza / (friendsDesv * followersDesv)
+
+//Coordenas para el gráfico
+val friendsFollowers = values.map(tweet => (tweet.userFriendsCount, tweet.userFollowersCount))
+
+//Creación de un archivo temporal
+val outPearson = java.io.File.createTempFile("pearson.csv", "csv")
+val writerPearson = outPearson.asCsvWriter[(Double, Double)](rfc.withHeader("x", "y"))
+friendsFollowers.foreach(writerPearson.write(_))
+writerPearson.close()
+*/
