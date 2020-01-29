@@ -71,7 +71,6 @@
 			<div class="fh5co-narrow-content">
 				<div class="row row-bottom-padded-md">
 					<div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
-						<div id="vis1"></div>
 						<div id="vis2"></div>
 					</div>
 					<div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
@@ -84,51 +83,26 @@
 		</div>
 	</div>
 	<script>
-		const vlSpec1 = {
-			$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
-			data: {
-				"url": "data/firstSentence/tweetperDay.csv"
-			},
-			"width": 320,
-			"height": 200,
-			mark: 'bar',
-			encoding: {
-				x: {
-					field: 'Day',
-					type: 'quantitative',
-					title: 'Día del mes',
-					"scale": {"domain": [1, 32]}
-				},
-				y: {
-					field: 'Tweet N',
-					type: 'quantitative',
-					title: 'Número de Tweets'
-				}
-			}
-		};
-		// Embed the visualization in the container with id `vis`
-		vegaEmbed('#vis1', vlSpec1);
-
 		const vlSpec2 = {
 			$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
 			data: {
-				"url": "data/firstSentence/retweetperDay.csv"
+				"url": "data/seventhSentence/media.csv"
 			},
-			"width": 320,
-			"height": 200,
+			"width": 450,
+			"height": 400,
 			mark: 'bar',
 			encoding: {
 				x: {
-					field: 'Day',
+					field: 'mediaN',
 					type: 'quantitative',
-					title: 'Día del mes',
-					scale: {"domain": [1, 32]}
+					title: 'Número de archivos media',
+					scale: {"domain": [0, 4]}
 				},
 				y: {
-					field: 'Retweet N',
+					field: 'count',
 					aggregate: 'sum',
 					type: 'quantitative',
-					title: 'Número de Retweets'
+					title: 'Tweets'
 				}
 			}
 		};
