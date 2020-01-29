@@ -72,10 +72,10 @@
 		<div id="fh5co-main">
 			<div class="fh5co-narrow-content">
 				<div class="row row-bottom-padded-md">
-					<div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
-						<div id="vis1"></div>
-						<div id="vis2"></div>
-					</div>
+					<img class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
+				</div>
+					<a href="images/Tabla-e-9.PNG" class="image"><img src="images/Tabla-e-9.PNG" alt=""></a>
+					
 					<div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
 						<h2 class="fh5co-heading">N&uacute;mero de publicaciones por d&iacute;a y hora</h2>
 						<p>El siguiente mapeo exploratorio tiene como proposito conocer la frecuencia con la que un usuario publica
@@ -84,62 +84,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>	
 	</div>
-	<script>
-		const vlSpec1 = {
-			$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
-			data: {
-				"url": "data/firstSentence/tweetperDay.csv"
-			},
-			"width": 320,
-			"height": 200,
-			mark: 'bar',
-			encoding: {
-				x: {
-					field: 'Day',
-					type: 'quantitative',
-					title: 'Día del mes',
-					"scale": {"domain": [1, 32]}
-				},
-				y: {
-					field: 'Tweet N',
-					type: 'quantitative',
-					title: 'Número de Tweets'
-				}
-			}
-		};
-		// Embed the visualization in the container with id `vis`
-		vegaEmbed('#vis1', vlSpec1);
-
-		$(document).ready( function () {
-			$('#myTable').DataTable();
-		} );
-		const vlSpec2 = {
-			$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
-			data: {
-				"url": "data/firstSentence/retweetperDay.csv"
-			},
-			"width": 320,
-			"height": 200,
-			mark: 'bar',
-			encoding: {
-				x: {
-					field: 'Day',
-					type: 'quantitative',
-					title: 'Día del mes',
-					scale: {"domain": [1, 32]}
-				},
-				y: {
-					field: 'Retweet N',
-					aggregate: 'sum',
-					type: 'quantitative',
-					title: 'Número de Retweets'
-				}
-			}
-		};
-		vegaEmbed('#vis2', vlSpec2);
-	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 	<!-- jQuery Easing -->

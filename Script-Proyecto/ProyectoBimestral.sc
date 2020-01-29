@@ -17,8 +17,7 @@ import scala.util.{Try,Success,Failure}
 
 //Ruta para acceder al archivo csv
 
-val path2DataFile = "C:\\Users\\Usuario iTC\\Documents" +
-  "\\programacion_funcional\\proyectoFinal\\ods_2_1 (2).csv"
+val path2DataFile = "C:\\Users\\Brandon\\Downloads\\ods_2_1.csv"
 
 //Formato de la fecha empleada en el DataSet
 val formatDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
@@ -53,7 +52,7 @@ val dataSource = new File(path2DataFile).readCsv[List, Tweet](rfc.withHeader)
 
 // Selección de los archivos útiles del DataSet
 val values = dataSource.collect({ case Right(tweet) => tweet })
-
+/*
 //first Sentence: Tweets y Retweets por día
 
 // Retweets por día
@@ -81,10 +80,9 @@ val out3 = java.io.File.createTempFile("tweetperDay.csv", "csv")
 val tweetcsv = out3.asCsvWriter[(Int, Int)](rfc.withHeader("Day", "Tweet N") )
 tweetperDay.foreach(tweetcsv.write(_) )
 tweetcsv.close()
-
-
+*/
+/*
 //Second Sentence: Tweets y Retweets por hora
-
 
 //Retweets por hora
 
@@ -111,13 +109,14 @@ val out5 = java.io.File.createTempFile("tweetperHour.csv", "csv")
 val tweetHourcsv = out5.asCsvWriter[(Int, Int)](rfc.withHeader("Hour", "Tweet N") )
 tweetperHour.foreach(tweetHourcsv.write(_) )
 tweetHourcsv.close()
-
+*/
+/*
 // Third Sentence: Aplicaciones más usadas para publicar
 
 // Filtrado de la columna source y agrupación por caracteres semejantes
 val apps = ListMap(values.filterNot(tweet => tweet.text.startsWith("RT"))
-  .map(tweet => tweet.source.split (">")(1).replace("</a", "")).groupBy(identity)
-  .map({case(k, v) => (k, v.length)})
+  .map(tweet => tweet.source.split (">")(1).replace("</a"
+    , "")).groupBy(identity).map({case(k, v) => (k, v.length)})
   .toSeq.sortWith(_._2 > _._2): _*)
 
 //Creación de un archivo temporal
@@ -125,10 +124,12 @@ val outApps = java.io.File.createTempFile("apps.csv", "csv")
 val appsCsv = outApps.asCsvWriter[(String, Int)](rfc.withHeader("Aplicacion", "Cantidad de Usuarios") )
 apps.foreach(appsCsv.write(_))
 appsCsv.close()
-
+*/
+/*
 // Fourth Sentence: Distribución de hashtags
 
-val hashtagsN = values.map(tweet => ujson.read(tweet.entitiesStr).obj("hashtags").arr.length)
+val hashtagsN = values.map(tweet => ujson.read(tweet.entitiesStr)
+  .obj("hashtags").arr.length)
   .groupBy(identity).map({case (k, v) => (k, v.length)})
 
 // Creación de un archivo temporal
@@ -139,9 +140,11 @@ val writerHashtags = outHashtags.asCsvWriter[(Int, Int)](rfc.withHeader("hashtag
 hashtagsN.foreach(writerHashtags.write(_))
 
 writerHashtags.close()
-
+*/
+/*
 // Fifth Sentence: Distribución de menciones
-val mentionsN = values.map(tweet => ujson.read(tweet.entitiesStr).obj("user_mentions").arr.length)
+val mentionsN = values.map(tweet => ujson.read(tweet.entitiesStr)
+  .obj("user_mentions").arr.length)
   .groupBy(identity).map({case (k, v) => (k, v.length)})
 
 // Creación de un archivo temporal
@@ -152,9 +155,11 @@ val writerMentions = outMentions.asCsvWriter[(Int, Int)](rfc.withHeader("mention
 mentionsN.foreach(writerMentions.write(_))
 
 writerMentions.close()
-
+*/
+/*
 // Sixth Sentence: Distribución de urls
-val urlN = values.map(tweet => ujson.read(tweet.entitiesStr).obj("urls").arr.length)
+val urlN = values.map(tweet => ujson.read(tweet.entitiesStr)
+  .obj("urls").arr.length)
   .groupBy(identity).map({case (k, v) => (k, v.length)})
 
 // Creación de un archivo temporal
@@ -165,3 +170,63 @@ val writerURL = outURL.asCsvWriter[(Int, Int)](rfc.withHeader("urlN", "count"))
 urlN.foreach(writerURL.write(_))
 
 writerURL.close()
+*/
+/*
+// Seventh sentence: Distribucion de media
+*/
+/*
+// Eight sentence: Relacion entre amigos y seguidores
+*/
+/*
+// Nineth Sentence: Comportamiento del usuario
+case class UserTweet(username: String, text: String, isRt: Boolean)
+
+def processFFCounters (ffData: List[Tuple3[String, Double, Double]],
+                       isFollowers: Boolean): Double = {
+  val avg = (nums: List[Double]) => nums.sum / nums.length
+
+  val countersList = ffData.map(t3 => (t3._2, t3._3))
+  if (isFollowers)
+    avg(countersList.flatMap(t2 => List(t2._1))).toInt
+  else
+    avg(countersList.flatMap(t2 => List(t2._2))).toInt
+}
+
+def retwet (text: String): Boolean = text.toLowerCase.startsWith("rt")
+
+val textClassify = values.map(tweet => UserTweet(tweet.fromUser,
+  tweet.text, retwet(tweet.text)))
+  .groupBy(userT => (userT.username, userT.isRt))
+  .map({case (k, v) => (k , v.length)})
+
+val user_followers = values.map(tweet => (tweet.fromUser,
+  tweet.userFollowersCount, tweet.userFriendsCount))
+  .groupBy(_._1)
+  .map(kv => (kv._1,
+    processFFCounters(kv._2, true),
+    processFFCounters(kv._2, false),
+    textClassify.get((kv._1, false)).getOrElse(0),
+    textClassify.get((kv._1, true)).getOrElse(0)
+  ))
+
+val outUactivity = java.io.File.createTempFile("user_activity.csv", "csv")
+
+val writerUactivity = outUactivity.asCsvWriter[(String, Double, Double, Int, Int)](rfc
+  .withHeader("user", "friendcount", "followercount", "tweet", "retweet"))
+user_followers.foreach(writerUactivity.write(_))
+writerUactivity.close()
+*/
+/*
+// Tenth Sentence: Numero de meciones de cada usuario
+val user_mentioned = values.flatMap(tweet => ujson.read(tweet.entitiesStr).obj("user_mentions").arr)
+  .map(ht => ht.obj("screen_name").str.toLowerCase.trim).groupBy(identity)
+  .map({case (k, v) => (k, v.length)})
+
+val outUMentions = java.io.File.createTempFile("user_mentioned.csv", "csv")
+
+val writerUMentions = outUMentions.asCsvWriter[(String, Int)](rfc.withHeader("user_mentioned", "count"))
+
+user_mentioned.foreach(writerUMentions.write(_))
+
+writerUMentions.close()
+*/
