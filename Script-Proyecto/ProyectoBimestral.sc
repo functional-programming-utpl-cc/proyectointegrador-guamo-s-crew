@@ -158,6 +158,7 @@ writerMentions.close()
 */
 /*
 // Sixth Sentence: Distribución de urls
+
 val urlN = values.map(tweet => ujson.read(tweet.entitiesStr)
   .obj("urls").arr.length)
   .groupBy(identity).map({case (k, v) => (k, v.length)})
@@ -171,65 +172,7 @@ urlN.foreach(writerURL.write(_))
 
 writerURL.close()
 */
-/*
-// Seventh sentence: Distribucion de media
-*/
-/*
-// Eight sentence: Relacion entre amigos y seguidores
-*/
-/*
-// Nineth Sentence: Comportamiento del usuario
-case class UserTweet(username: String, text: String, isRt: Boolean)
 
-def processFFCounters (ffData: List[Tuple3[String, Double, Double]],
-                       isFollowers: Boolean): Double = {
-  val avg = (nums: List[Double]) => nums.sum / nums.length
-
-  val countersList = ffData.map(t3 => (t3._2, t3._3))
-  if (isFollowers)
-    avg(countersList.flatMap(t2 => List(t2._1))).toInt
-  else
-    avg(countersList.flatMap(t2 => List(t2._2))).toInt
-}
-
-def retwet (text: String): Boolean = text.toLowerCase.startsWith("rt")
-
-val textClassify = values.map(tweet => UserTweet(tweet.fromUser,
-  tweet.text, retwet(tweet.text)))
-  .groupBy(userT => (userT.username, userT.isRt))
-  .map({case (k, v) => (k , v.length)})
-
-val user_followers = values.map(tweet => (tweet.fromUser,
-  tweet.userFollowersCount, tweet.userFriendsCount))
-  .groupBy(_._1)
-  .map(kv => (kv._1,
-    processFFCounters(kv._2, true),
-    processFFCounters(kv._2, false),
-    textClassify.get((kv._1, false)).getOrElse(0),
-    textClassify.get((kv._1, true)).getOrElse(0)
-  ))
-
-val outUactivity = java.io.File.createTempFile("user_activity.csv", "csv")
-
-val writerUactivity = outUactivity.asCsvWriter[(String, Double, Double, Int, Int)](rfc
-  .withHeader("user", "friendcount", "followercount", "tweet", "retweet"))
-user_followers.foreach(writerUactivity.write(_))
-writerUactivity.close()
-*/
-/*
-// Tenth Sentence: Numero de meciones de cada usuario
-val user_mentioned = values.flatMap(tweet => ujson.read(tweet.entitiesStr).obj("user_mentions").arr)
-  .map(ht => ht.obj("screen_name").str.toLowerCase.trim).groupBy(identity)
-  .map({case (k, v) => (k, v.length)})
-
-val outUMentions = java.io.File.createTempFile("user_mentioned.csv", "csv")
-
-val writerUMentions = outUMentions.asCsvWriter[(String, Int)](rfc.withHeader("user_mentioned", "count"))
-
-user_mentioned.foreach(writerUMentions.write(_))
-
-writerUMentions.close()
-*/
 
 // Seven Sentence:
 
@@ -280,4 +223,57 @@ val outPearson = java.io.File.createTempFile("pearson.csv", "csv")
 val writerPearson = outPearson.asCsvWriter[(Double, Double)](rfc.withHeader("x", "y"))
 friendsFollowers.foreach(writerPearson.write(_))
 writerPearson.close()
+*/
+/*
+// Nineth Sentence: Comportamiento del usuario
+case class UserTweet(username: String, text: String, isRt: Boolean)
+
+def processFFCounters (ffData: List[Tuple3[String, Double, Double]],
+                       isFollowers: Boolean): Double = {
+  val avg = (nums: List[Double]) => nums.sum / nums.length
+
+  val countersList = ffData.map(t3 => (t3._2, t3._3))
+  if (isFollowers)
+    avg(countersList.flatMap(t2 => List(t2._1))).toInt
+  else
+    avg(countersList.flatMap(t2 => List(t2._2))).toInt
+}
+
+def retwet (text: String): Boolean = text.toLowerCase.startsWith("rt")
+
+val textClassify = values.map(tweet => UserTweet(tweet.fromUser,
+  tweet.text, retwet(tweet.text)))
+  .groupBy(userT => (userT.username, userT.isRt))
+  .map({case (k, v) => (k , v.length)})
+
+val user_followers = values.map(tweet => (tweet.fromUser,
+  tweet.userFollowersCount, tweet.userFriendsCount))
+  .groupBy(_._1)
+  .map(kv => (kv._1,
+    processFFCounters(kv._2, true),
+    processFFCounters(kv._2, false),
+    textClassify.get((kv._1, false)).getOrElse(0),
+    textClassify.get((kv._1, true)).getOrElse(0)
+  ))
+
+val outUactivity = java.io.File.createTempFile("user_activity.csv", "csv")
+
+val writerUactivity = outUactivity.asCsvWriter[(String, Double, Double, Int, Int)](rfc
+  .withHeader("user", "friendcount", "followercount", "tweet", "retweet"))
+user_followers.foreach(writerUactivity.write(_))
+writerUactivity.close()
+*/
+/*
+// Tenth Sentence: Numero de meciones de cada usuario
+val user_mentioned = values.flatMap(tweet => ujson.read(tweet.entitiesStr).obj("user_mentions").arr)
+  .map(ht => ht.obj("screen_name").str.toLowerCase.trim).groupBy(identity)
+  .map({case (k, v) => (k, v.length)}).filter(_._2 > 100)
+
+val outUMentions = java.io.File.createTempFile("user_mentioned.csv", "csv")
+
+val writerUMentions = outUMentions.asCsvWriter[(String, Int)](rfc.withHeader("user_mentioned", "count"))
+
+user_mentioned.foreach(writerUMentions.write(_))
+
+writerUMentions.close()
 */
