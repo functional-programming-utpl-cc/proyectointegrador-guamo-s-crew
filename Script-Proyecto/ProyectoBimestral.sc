@@ -269,6 +269,22 @@ val user_mentioned = values.flatMap(tweet => ujson.read(tweet.entitiesStr).obj("
   .map(ht => ht.obj("screen_name").str.toLowerCase.trim).groupBy(identity)
   .map({case (k, v) => (k, v.length)}).filter(_._2 > 100)
 
+val userForPer = values.flatMap(tweet => ujson.read(tweet.entitiesStr)
+  .obj("user_mentions").arr).map(ht => ht.obj("screen_name")
+  .str.toLowerCase.trim).groupBy(identity).map({case (k, v) => (k, v.length)})
+
+val allUsers = user_mentioned.map(x => x._1)
+
+val utotal = allUsers.map({case x: String => 1}).sum
+
+val userMoreThan100 = user_mentioned.count(_._2 > 100).toDouble
+
+val userLessThan100 = user_mentioned.count(_._2 < 100).toDouble
+
+val userPerMore100 = (userMoreThan100 * 100) / utotal
+
+val userPerLess100 = (userLessThan100 * 100) / utotal
+
 val outUMentions = java.io.File.createTempFile("user_mentioned.csv", "csv")
 
 val writerUMentions = outUMentions.asCsvWriter[(String, Int)](rfc.withHeader("user_mentioned", "count"))
